@@ -19,16 +19,16 @@ export const protect = async (
     }
 
     const token = authHeader.split(" ")[1];
-    const decoded: any = jwt.verify(token, process.env.JWT_SECRET!);
+    const decoded: any = jwt.verify(token, process.env.JWT_SECRET as string);
 
-    const user = await User.findById(decoded.id).select("-password");
+    const user = await User.findById(decoded.id);
     if (!user) {
       return res.status(401).json({ message: "User not found" });
     }
 
     req.user = user;
     next();
-  } catch (error) {
+  } catch {
     return res.status(401).json({ message: "Invalid token" });
   }
 };

@@ -5,13 +5,13 @@ import {
   assignVendor,
   markDelivered,
 } from "../controllers/poController";
-import auth from "../middleware/authMiddleware";
+import { protect } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
-router.post("/create", auth("admin"), createPO);
-router.get("/", auth("admin"), getAllPO);
-router.put("/:id/vendor", auth("admin"), assignVendor);
-router.put("/:id/deliver", auth("admin"), markDelivered);
+router.post("/create", protect, createPO);
+router.get("/", protect, getAllPO);
+router.put("/:id/vendor", protect, assignVendor);
+router.put("/:id/deliver", protect, markDelivered);
 
 export default router;
