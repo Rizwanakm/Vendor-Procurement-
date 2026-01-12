@@ -1,7 +1,8 @@
+import React from "react";
 import { Navigate } from "react-router-dom";
 
 interface Props {
-  children: JSX.Element;
+  children: React.ReactNode;
   role: "employee" | "manager" | "admin";
 }
 
@@ -10,17 +11,14 @@ const ProtectedRoute = ({ children, role }: Props) => {
   const userRole = localStorage.getItem("role");
 
   if (!token) {
-    return <Navigate to="/" />;
+    return <Navigate to="/login" replace />;
   }
 
   if (userRole !== role) {
-    return <Navigate to="/" />;
+    return <Navigate to="/login" replace />;
   }
-  if (role && userRole !== role) {
-  return <Navigate to="/login" />;
-}
 
-  return children;
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;
