@@ -1,7 +1,8 @@
-// src/swagger.ts
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import { Express } from "express";
+
+const SERVER_URL = process.env.SERVER_URL || "http://localhost:3001";
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -12,18 +13,16 @@ const options: swaggerJsdoc.Options = {
       description: "API documentation for Vendor Procurement project",
     },
     servers: [
-      {
-        url: "http://localhost:3001", // change for production
-      },
+      { url: SERVER_URL },
     ],
   },
-  apis: ["./src/routes/*.ts"], // read docs from routes
+  apis: ["./src/routes/*.ts"], // Swagger reads from your routes
 };
 
-// Export the swagger spec for use elsewhere
+// Export the swagger spec for manual use if needed
 export const swaggerSpec = swaggerJsdoc(options);
 
-// Setup function to register Swagger in Express
+// Setup Swagger in Express
 export const setupSwagger = (app: Express) => {
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 };
